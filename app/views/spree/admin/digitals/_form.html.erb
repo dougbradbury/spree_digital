@@ -23,7 +23,7 @@
      <p class="form-buttons">
       <%= f.field_container :file do %>
       <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
-      <%= f.file_field :attachment %>
+      <%= f.text_field :attachment_file_name %>
       <% end %>
 
       <%= hidden_field_tag 'digital[variant_id]', variant.id %>

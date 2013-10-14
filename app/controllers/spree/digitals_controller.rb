@@ -1,3 +1,4 @@
+require 'dropbox_sdk'
 module Spree
   class DigitalsController < Spree::StoreController
     ssl_required :show
@@ -5,22 +6,20 @@ module Spree
     def show
       link = DigitalLink.find_by_secret(params[:secret])
 
-      if link.present? and link.digital.attachment.present?
-        attachment = link.digital.attachment
-
-        # don't authorize the link unless the file exists
-        # the logger error will help track down customer issues easier
-
-        if File.file?(attachment.path)
-          if link.authorize!
-            send_file attachment.path, :filename => attachment.original_filename, :type => attachment.content_type and return
-          end
+      if link.present? and link.digital.attachment_file_name.present?
+        file = link.digital.attachment_file_name
+        if link.authorize!
+          client = DropboxClient.new(Spree::Config[:dropbox_token], :dropbox)
+          redirect_to client.media(file)['url']
         else
-          Rails.logger.error "Missing Digital Item: #{attachment.path}"
+          render :unauthorized
         end
+      else
+        Rails.logger.error "Missing Digital Item: #{file}"
       end
-
-      render :unauthorized
+    # rescue DropboxError => e
+    #   Rails.logger.error "Dropbox Error: '#{e.message}' for file #{file}"
+    #   render :unauthorized
     end
 
   end
