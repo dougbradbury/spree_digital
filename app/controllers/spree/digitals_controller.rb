@@ -6,12 +6,14 @@ module Spree
     def show
       link = DigitalLink.find_by_secret(params[:secret])
 
-      if attachment.present? 
+      if attachment.present?
         # don't authorize the link unless the file exists
         # the logger error will help track down customer issues easier
-        if attachment_is_file? 
+        if attachment_is_file?
           if digital_link.authorize!
-            if Spree::Config[:use_s3]
+            if Spree::SpreeDigitalConfiguration.new[:use_dropbox]
+              redirect_to attachment.url and return
+            elsif Spree::Config[:use_s3]
               redirect_to attachment.expiring_url(Spree::DigitalConfiguration[:s3_expiration_seconds]) and return
             else
               send_file attachment.path, :filename => attachment.original_filename, :type => attachment.content_type and return
@@ -24,7 +26,7 @@ module Spree
 
       render :unauthorized
     end
- 
+
     def attachment_is_file?
       File.file?(attachment.path)
     end

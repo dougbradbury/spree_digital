@@ -14,10 +14,13 @@ module Spree
 
     #dropbox preferences
     preference :use_dropbox, :boolean, :default => false
-    preference :dropbox_key, :string
-    preference :dropbox_secret, :string
-    preference :dropbox_token, :string
-    preference :dropbox_token_secret, :string
-    preference :dropbox_user, :string
+    preference :dropbox_visibility, :string, :default => "public"
+    preference :dropbox_app_key, :string
+    preference :dropbox_app_secret, :string
+    preference :dropbox_access_token, :string
+    preference :dropbox_access_token_secret, :string
+    preference :dropbox_user_id, :string
+    preference :dropbox_access_type, :string
+    preference :dropbox_root_path, :string
   end
 end
