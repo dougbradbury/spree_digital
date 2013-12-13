@@ -12,6 +12,8 @@ module Spree
     #number of seconds before an s3 link expires
     preference :s3_expiration_seconds,    :integer, :default => 10
 
+    preference :preserve_files, :boolean, :default => false
+
     #dropbox preferences
     preference :use_dropbox, :boolean, :default => false
     preference :dropbox_visibility, :string, :default => "public"

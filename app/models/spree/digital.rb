@@ -3,7 +3,9 @@ module Spree
     belongs_to :variant
     has_many :digital_links, :dependent => :destroy
 
-    has_attached_file :attachment, :path => ":rails_root/private/digitals/:id/:basename.:extension"
+    has_attached_file :attachment,
+      :path => ":rails_root/private/digitals/:id/:basename.:extension",
+      :preserve_files => Spree::SpreeDigitalConfiguration.new[:preserve_files]
 
     include Spree::Core::S3Support
     supports_s3 :attachment
