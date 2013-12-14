@@ -21,7 +21,7 @@ describe Spree::Admin::DigitalsController do
       end
 
       it "should display list of digitals when they exist" do
-        
+
       end
     end
 
@@ -40,7 +40,7 @@ describe Spree::Admin::DigitalsController do
         response.code.should == "200"
         response.body.should include('A digital version of this product currently exists')
       end
-      
+
     end
   end
 
@@ -50,11 +50,25 @@ describe Spree::Admin::DigitalsController do
 
       it 'creates a digital associated with the variant and product' do
         lambda {
-          spree_post :create, product_id: product.permalink, 
-                              digital: { variant_id: variant.id, 
+          spree_post :create, product_id: product.permalink,
+                              digital: { variant_id: variant.id,
                                          attachment: upload_image('thinking-cat.jpg') }
           response.should redirect_to(spree.admin_product_digitals_path(product))
         }.should change(Spree::Digital, :count).by(1)
+      end
+
+      it 'creates a digital without an upload' do
+        lambda {
+          spree_post :create, product_id: product.permalink,
+                              digital: { variant_id:              variant.id,
+                                         attachment_file_name:    'thinking-cat.jpg',
+                                         attachment_content_type: 'image/jpeg',
+                                         attachment_file_size:    9987 }
+          response.should redirect_to(spree.admin_product_digitals_path(product))
+        }.should change(Spree::Digital, :count).by(1)
+        Spree::Digital.last.attachment_file_name.should == 'thinking-cat.jpg'
+        Spree::Digital.last.attachment_content_type.should == 'image/jpeg'
+        Spree::Digital.last.attachment_file_size.should == 9987
       end
     end
   end

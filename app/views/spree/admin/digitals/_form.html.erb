@@ -21,7 +21,14 @@
         <%= f.field_container :file do %>
           <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
           <%= f.file_field :attachment %>
+
+          <a data-id="dropbox-select" href= "#">Select From Dropbox</a>
+          <%= f.text_field :attachment_file_name, :readonly => true%>
+          <%= f.hidden_field :attachment_file_size %>
+          <%= f.hidden_field :attachment_content_type %>
         <% end %>
+
+        <div id="dropbox-file-list"></div>
 
         <%= hidden_field_tag 'digital[variant_id]', variant.id %>
 
@@ -30,3 +37,11 @@
     </fieldset>
   <% end %>
 </div>
+
+<% content_for :head do %>
+  <script type="text/javascript">
+  $(function() {
+      SpreeDigital("<%= admin_dropbox_browser_ls_path %>");
+  });
+  </script>
+<% end %>

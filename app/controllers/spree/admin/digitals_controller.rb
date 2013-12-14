@@ -12,7 +12,7 @@ module Spree
       end
 
       def permitted_digital_attributes
-        [:variant_id, :attachment]
+        [:variant_id, :attachment, :attachment_file_name, :attachment_file_size, :attachment_content_type]
       end
   end
 end

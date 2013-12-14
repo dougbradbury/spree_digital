@@ -1,0 +1,10 @@
+
+<ul class = "file-selection">
+<% @files.each do |file| %>
+  <li data-content-type="<%= file[:content_type] %>"
+    data-file-size="<%= file[:file_size] %>"
+    data-file-name="<%= file[:name] %>" >
+    <%= file[:name] %>
+  </li>
+<% end %>
+</ul>
