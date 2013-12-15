@@ -25,11 +25,11 @@
           </p>
 
           <% if Spree::SpreeDigitalConfiguration.new[:use_dropbox] %>
-            <p>
-              <button data-id="dropbox-select" ><%= t("select_file") %></button>
-              <%= f.text_field :attachment_file_name, :readonly => true, :placeholder => t(:no_file) %>
-              <%= f.hidden_field :attachment_file_size %>
-              <%= f.hidden_field :attachment_content_type %>
+            <p data-variant="<%= variant.id %>">
+              <button data-id="dropbox-select" data-variant="<%= variant.id %>"><%= t("select_file") %></button>
+              <%= f.text_field :attachment_file_name, :readonly => true, :placeholder => t(:no_file), :id => "#{variant.id}_file_name" %>
+              <%= f.hidden_field :attachment_file_size, :id => "#{variant.id}_file_size" %>
+              <%= f.hidden_field :attachment_content_type, :id => "#{variant.id}_content_type" %>
             </p>
           <% end %>
         <% end %>
