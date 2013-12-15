@@ -32,27 +32,37 @@ describe Spree::Admin::DropboxBrowserController do
   before(:each) do
     Spree::SpreeDigitalConfiguration.new.set(:dropbox_root_path => "foo")
     controller.dropbox_client = double(:dropbox_client)
-    controller.dropbox_client.should_receive(:metadata).with("foo").and_return(RESPONSE_HASH)
+  end
+  context "successful call" do
+    before(:each) do
+      controller.dropbox_client.should_receive(:metadata).with("foo").and_return(RESPONSE_HASH)
+    end
+
+    it "lists dropbox file contents" do
+      spree_get :ls
+      assigns[:files].size.should == 2
+    end
+
+    it "lists filenames of a dropbox directory" do
+      spree_get :ls
+      assigns[:files].collect{ |file| file[:name] }.should =~ ["227L_-_Cover.pdf", "app/_testScripts/316P_-_Cover.pdf"]
+    end
+
+    it "lists sizes of a dropbox directory" do
+      spree_get :ls
+      assigns[:files].collect{ |file| file[:file_size] }.should =~ [95536, 99423]
+    end
+
+    it "lists mime_types of a dropbox directory" do
+      spree_get :ls
+      assigns[:files].collect{ |file| file[:content_type] }.should =~ ["application/wat_foo", "application/pdf"]
+    end
   end
 
-  it "lists dropbox file contents" do
+  it "handles dropbox errors" do
+    controller.dropbox_client.should_receive(:metadata).and_raise(DropboxError.new("problem"))
     spree_get :ls
-    assigns[:files].size.should == 2
-  end
-
-  it "lists filenames of a dropbox directory" do
-    spree_get :ls
-    assigns[:files].collect{ |file| file[:name] }.should =~ ["227L_-_Cover.pdf", "app/_testScripts/316P_-_Cover.pdf"]
-  end
-
-  it "lists sizes of a dropbox directory" do
-    spree_get :ls
-    assigns[:files].collect{ |file| file[:file_size] }.should =~ [95536, 99423]
-  end
-
-  it "lists mime_types of a dropbox directory" do
-    spree_get :ls
-    assigns[:files].collect{ |file| file[:content_type] }.should =~ ["application/wat_foo", "application/pdf"]
+    assigns[:error].should be_a(DropboxError)
   end
 
 end

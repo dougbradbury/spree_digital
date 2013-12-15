@@ -1,6 +1,11 @@
 .file-selection {
+  ul {
+    width: 40%;
+  }
   li:hover {
-    cursor:pointer
+    cursor:pointer;
+    background-color: #5498DA;
+    color: #FFFFFF;
   }
   li {
     list-style: none;

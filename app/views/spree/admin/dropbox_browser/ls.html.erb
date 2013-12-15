@@ -1,4 +1,8 @@
-
+<% if @error.present? %>
+  <div class="dropbox-error"><p>Sorry, there was a problem talking to Dropbox. </p>
+    <p><%= @error.to_s %></p>
+  </div>
+<% end %>
 <ul class = "file-selection">
 <% @files.each do |file| %>
   <li data-content-type="<%= file[:content_type] %>"

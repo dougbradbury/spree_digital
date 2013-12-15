@@ -19,22 +19,28 @@
       <% end %>
       <p class="form-buttons">
         <%= f.field_container :file do %>
-          <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
-          <%= f.file_field :attachment %>
+          <p>
+            <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
+            <%= f.file_field :attachment %>
+          </p>
 
-          <a data-id="dropbox-select" href= "#">Select From Dropbox</a>
-          <%= f.text_field :attachment_file_name, :readonly => true%>
-          <%= f.hidden_field :attachment_file_size %>
-          <%= f.hidden_field :attachment_content_type %>
+          <% if Spree::SpreeDigitalConfiguration.new[:use_dropbox] %>
+            <p>
+              <button data-id="dropbox-select" ><%= t("select_file") %></button>
+              <%= f.text_field :attachment_file_name, :readonly => true, :placeholder => t(:no_file) %>
+              <%= f.hidden_field :attachment_file_size %>
+              <%= f.hidden_field :attachment_content_type %>
+            </p>
+          <% end %>
         <% end %>
 
-        <div id="dropbox-file-list"></div>
 
         <%= hidden_field_tag 'digital[variant_id]', variant.id %>
 
         <%= button t('spree_digital.upload') %>
       </p>
     </fieldset>
+    <div id="dropbox-file-list"></div>
   <% end %>
 </div>
 
