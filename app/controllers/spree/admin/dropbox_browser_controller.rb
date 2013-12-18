@@ -13,22 +13,31 @@ module Spree
     def ls
       @files = []
       @response = dropbox_client.metadata(spree_config[:dropbox_root_path])
-      @files = @response["contents"].collect do |resp|
-        { :name => resp["path"].gsub(/^#{@response["path"]}\//, ""),
-          :file_size => resp["bytes"],
-          :content_type => resp["mime_type"]
-        }
-      end
+      @files = parse_metadata(@response["contents"], @response["path"])
     rescue DropboxError => e
       @error = e
     end
 
     def search
-
+      @response = dropbox_client.search(spree_config[:dropbox_root_path], params[:query])
+      @files = parse_metadata(@response, spree_config[:dropbox_root_path])
+      render :ls
+    rescue DropboxError => e
+      @error = e
     end
 
 
     private
+
+    def parse_metadata(files, path)
+      files.collect do |resp|
+        {
+          :name => resp["path"].gsub(/^#{path}\//, ""),
+          :file_size => resp["bytes"],
+          :content_type => resp["mime_type"]
+        }
+      end
+    end
 
     def spree_config
       @spree_config ||= Spree::SpreeDigitalConfiguration.new

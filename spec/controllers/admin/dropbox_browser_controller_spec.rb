@@ -33,7 +33,8 @@ describe Spree::Admin::DropboxBrowserController do
     Spree::SpreeDigitalConfiguration.new.set(:dropbox_root_path => "foo")
     controller.dropbox_client = double(:dropbox_client)
   end
-  context "successful call" do
+
+  context "successful metadata call" do
     before(:each) do
       controller.dropbox_client.should_receive(:metadata).with("foo").and_return(RESPONSE_HASH)
     end
@@ -56,6 +57,17 @@ describe Spree::Admin::DropboxBrowserController do
     it "lists mime_types of a dropbox directory" do
       spree_get :ls
       assigns[:files].collect{ |file| file[:content_type] }.should =~ ["application/wat_foo", "application/pdf"]
+    end
+  end
+
+  context "successful search call" do
+    before(:each) do
+      controller.dropbox_client.should_receive(:search).with("foo", "query").and_return(RESPONSE_HASH["contents"])
+    end
+
+    it "searchs" do
+      spree_get :search, :query => "query"
+      assigns[:files].size.should == 2
     end
   end
 

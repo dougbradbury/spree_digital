@@ -5,6 +5,7 @@ Spree::Core::Engine.routes.draw do
     end
 
     get '/dropbox_browser/ls', :to => 'dropbox_browser#ls', :as => 'dropbox_browser_ls'
+    get '/dropbox_browser/search', :to => 'dropbox_browser#search', :as => 'dropbox_browser_search'
 
     resources :orders do
       member do
