@@ -19,18 +19,23 @@
       <% end %>
       <p class="form-buttons">
         <%= f.field_container :file do %>
-          <p>
-            <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
-            <%= f.file_field :attachment %>
-          </p>
+          <% if !Spree::SpreeDigitalConfiguration.new[:use_dropbox] %>
+            <p>
+              <%= f.label :file, t("new_file") %> <span class="required">*</span><br/>
+              <%= f.file_field :attachment %>
+            </p>
+          <% end %>
 
           <% if Spree::SpreeDigitalConfiguration.new[:use_dropbox] %>
-            <p data-variant="<%= variant.id %>">
-              <button data-id="dropbox-select" data-variant="<%= variant.id %>"><%= t("select_file") %></button>
-              <%= f.text_field :attachment_file_name, :readonly => true, :placeholder => t(:no_file), :id => "#{variant.id}_file_name" %>
+            <div data-variant="<%= variant.id %>" class="file-selection">
+              <%= f.text_field :attachment_file_name, :readonly => true,
+                :placeholder => t(:no_file), :id => "#{variant.id}_file_name",
+                :'data-id' =>"dropbox-select" %>
+              <input type="text" data-id="dropbox-search" placeholder="Search"></input>
+              <div data-id="dropbox-file-list" class="file-list"></div>
               <%= f.hidden_field :attachment_file_size, :id => "#{variant.id}_file_size" %>
               <%= f.hidden_field :attachment_content_type, :id => "#{variant.id}_content_type" %>
-            </p>
+            </div>
           <% end %>
         <% end %>
 
@@ -40,7 +45,6 @@
         <%= button t('spree_digital.upload') %>
       </p>
     </fieldset>
-    <div id="dropbox-file-list"></div>
   <% end %>
 </div>
 
@@ -48,6 +52,7 @@
   <script type="text/javascript">
   $(function() {
       SpreeDigital("<%= admin_dropbox_browser_ls_path %>");
+      SpreeDigitalSearch("<%= admin_dropbox_browser_search_path %>");
   });
   </script>
 <% end %>
