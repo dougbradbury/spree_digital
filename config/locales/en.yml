@@ -17,9 +17,8 @@ en:
   reset_downloads: Reset Digital Downloads
   no_file: Select File
   spree:
-    digitals:
-      unauthorized:
-        explained: This download link has expired.
-        unauthorized: Unauthorized
+    digitals: "Digital Downloads"
+  explained: This download link has expired.
+  unauthorized: Unauthorized
   spree_digital:
     upload: Save

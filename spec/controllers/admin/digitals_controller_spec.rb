@@ -5,6 +5,10 @@ describe Spree::Admin::DigitalsController do
 
   let!(:product) { create(:product) }
 
+  it "has controller name" do
+    controller.controller_name.should == "digitals"
+  end
+
   context '#index' do
     render_views
 
