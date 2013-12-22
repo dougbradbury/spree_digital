@@ -12,7 +12,7 @@ module Spree
         if attachment_is_file?
           if digital_link.authorize!
             if Spree::SpreeDigitalConfiguration.new[:use_dropbox]
-              redirect_to attachment.url and return
+              redirect_to attachment.url(:download => true) and return
             elsif Spree::Config[:use_s3]
               redirect_to attachment.expiring_url(Spree::DigitalConfiguration[:s3_expiration_seconds]) and return
             else
