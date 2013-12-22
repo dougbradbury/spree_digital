@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spree_backend'
   s.add_dependency 'spree_core', '~> 2.2.0.beta'
   s.add_dependency 'spree_frontend'
+  s.add_dependency 'paperclip-dropbox', '~> 1.1.7'
 
   # test suite
   s.add_development_dependency 'shoulda-matchers'

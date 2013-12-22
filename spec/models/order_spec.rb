@@ -10,7 +10,7 @@ describe Spree::Order do
       order.line_items.second.variant.should == variants[1]
       order.line_items.third.variant.should == variants[2]
     end
-    
+
     it "should handle quantity higher than 1 when adding one specific digital Variant" do
       order = create(:order)
       digital_variant = create(:variant, :digitals => [create(:digital)])
@@ -20,7 +20,7 @@ describe Spree::Order do
       order.line_items.first.quantity.should == 5
     end
   end
-  
+
   context "line_item analysis" do
     it "should understand that all products are digital" do
       order = create(:order)
@@ -31,7 +31,7 @@ describe Spree::Order do
       order.contents.add create(:variant, :digitals => [create(:digital)]), 4
       order.digital?.should be_true
     end
-    
+
     it "should understand that not all products are digital" do
       order = create(:order)
       3.times do
@@ -155,6 +155,11 @@ describe Spree::Order do
       mixed_order_digital_links.each do |l|
         links_from_digitals.should include(l)
       end
+    end
+
+    xit "should create one link for a single digital Variant" do
+      mixed_order.generate_digital_links
+      mixed_order.digital_links.size.should == 2
     end
   end
 
