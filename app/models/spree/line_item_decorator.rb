@@ -11,7 +11,7 @@ Spree::LineItem.class_eval do
 
     #include master variant digitals
     master = variant.product.master
-    if(master.digital?)
+    if(master.digital? && !variant.is_master)
       create_digital_links_for_variant(master)
     end
     create_digital_links_for_variant(variant)
