@@ -12,14 +12,14 @@ module Spree
 
     def ls
       @files = browser.ls
-    rescue DropboxError => e
+    rescue DropboxApi::Errors::BasicError => e
       @error = e
     end
 
     def search
       @files = browser.search(params[:query])
       render :ls
-    rescue DropboxError => e
+    rescue DropboxApi::Errors::BasicError => e
       @error = e
     end
 

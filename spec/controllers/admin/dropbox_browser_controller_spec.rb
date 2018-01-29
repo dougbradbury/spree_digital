@@ -72,9 +72,9 @@ describe Spree::Admin::DropboxBrowserController do
   end
 
   it "handles dropbox errors" do
-    controller.dropbox_client.should_receive(:metadata).and_raise(DropboxError.new("problem"))
+    controller.dropbox_client.should_receive(:list_folder).and_raise(DropboxApi::Errors::BasicError.new("problem"))
     spree_get :ls
-    assigns[:error].should be_a(DropboxError)
+    assigns[:error].should be_a(DropboxApi::Errors::BasicError)
   end
 
 end
