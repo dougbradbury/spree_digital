@@ -14,8 +14,6 @@ module Spree
               app_key: config[:dropbox_app_key],
               app_secret: config[:dropbox_app_secret],
               access_token: config[:dropbox_access_token],
-              user_id: config[:dropbox_user_id],
-              access_token_secret: config[:dropbox_access_token_secret],
               access_type: config[:dropbox_access_type]}
 
             self.attachment_definitions[field][:storage] = :dropbox
